@@ -36,7 +36,6 @@ public class Valetinho {
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
 	private JLabel lblNewLabel_7;
-	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_4;
@@ -83,58 +82,36 @@ public class Valetinho {
 	private void initialize() {
 		frmValetinho = new JFrame("MENU");
 		frmValetinho.setTitle("Valetinho");
-		frmValetinho.setBounds(400, 100, 499, 641);
+		frmValetinho.setBounds(400, 100, 499, 625);
 		frmValetinho.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmValetinho.getContentPane().setLayout(null);
+		
+		try {
+			estacionamento = new Estacionamento(10);
+			estacionamento.lerDados();
+			JOptionPane.showMessageDialog(null, "Estacionamento Criado!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+		} catch (Exception e) {
+			String msg = e.getMessage();
+			JOptionPane.showMessageDialog(null, msg, "Error ao criar Estacionamento", JOptionPane.ERROR_MESSAGE);
+		}
 		
 		URL url = this.getClass().getResource("/imagens/icone.png"); 
 		Image iconeTitulo = Toolkit.getDefaultToolkit().getImage(url); 
 		frmValetinho.setIconImage(iconeTitulo);
 		
-		JLabel lblNewLabel = new JLabel("Nº de vagas:");
-		lblNewLabel.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel.setBounds(62, 49, 96, 19);
-		frmValetinho.getContentPane().add(lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setBounds(156, 49, 64, 19);
-		frmValetinho.getContentPane().add(textField);
-		textField.setColumns(10);
-		
-		JButton btnNewButton = new JButton("Criar Estacionamento");
-		btnNewButton.setBackground(Color.ORANGE);
-		btnNewButton.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (textField.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Campo Vazio!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					return;
-				} 
-				try {
-					int n = Integer.parseInt(textField.getText());
-					estacionamento = new Estacionamento(n);
-					JOptionPane.showMessageDialog(null, "Estacionamento Criado!", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
-				} catch (Exception i) {
-					JOptionPane.showMessageDialog(null, i.getMessage(), "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-				}
-				
-			}
-		});
-		btnNewButton.setBounds(230, 48, 183, 21);
-		frmValetinho.getContentPane().add(btnNewButton);
-		
 		JLabel lblNewLabel_1 = new JLabel("Entrada:");
 		lblNewLabel_1.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_1.setBounds(62, 130, 64, 13);
+		lblNewLabel_1.setBounds(62, 48, 75, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_1);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(83, 153, 96, 19);
+		textField_1.setBounds(83, 71, 96, 19);
 		frmValetinho.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(189, 153, 96, 19);
+		textField_2.setBounds(189, 71, 96, 19);
 		frmValetinho.getContentPane().add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -142,12 +119,6 @@ public class Valetinho {
 		btnNewButton_1.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					textField_1.setText("");
-					textField_2.setText("");
-					return;
-				}
 				if (textField_1.getText().isEmpty() || textField_2.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo Vazio!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -156,6 +127,7 @@ public class Valetinho {
 				int vaga = Integer.parseInt(textField_2.getText());
 				try {
 					estacionamento.entrar(placa, vaga);
+					estacionamento.gravarDados();
 					JOptionPane.showMessageDialog(null, "Veículo " + placa + " entrou na vaga " + vaga, "Entrar", JOptionPane.INFORMATION_MESSAGE);
 					textField_1.setText("");
 					textField_2.setText("");
@@ -164,16 +136,16 @@ public class Valetinho {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(295, 152, 120, 21);
+		btnNewButton_1.setBounds(295, 70, 120, 21);
 		frmValetinho.getContentPane().add(btnNewButton_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Saida:");
 		lblNewLabel_2.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_2.setBounds(62, 191, 45, 13);
+		lblNewLabel_2.setBounds(62, 129, 64, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_2);
 		
 		textField_4 = new JTextField();
-		textField_4.setBounds(83, 214, 96, 19);
+		textField_4.setBounds(83, 152, 96, 19);
 		frmValetinho.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 		
@@ -181,11 +153,6 @@ public class Valetinho {
 		btnNewButton_2.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					textField_4.setText("");
-					return;
-				}
 				if (textField_4.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo Vazio!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -194,6 +161,7 @@ public class Valetinho {
 				int vaga = Integer.parseInt(textField_4.getText());
 				try {
 					estacionamento.sair(vaga);
+					estacionamento.gravarDados();
 					JOptionPane.showMessageDialog(null, "Veículo saiu da vaga " + vaga, "Sair", JOptionPane.INFORMATION_MESSAGE);
 					textField_4.setText("");
 				} catch (Exception i) {
@@ -201,16 +169,16 @@ public class Valetinho {
 				}
 			}
 		});
-		btnNewButton_2.setBounds(189, 213, 120, 21);
+		btnNewButton_2.setBounds(189, 152, 120, 21);
 		frmValetinho.getContentPane().add(btnNewButton_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Consulta de Placa:");
 		lblNewLabel_3.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_3.setBounds(62, 253, 158, 13);
+		lblNewLabel_3.setBounds(62, 203, 158, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_3);
 		
 		textField_5 = new JTextField();
-		textField_5.setBounds(85, 276, 96, 19);
+		textField_5.setBounds(83, 226, 96, 19);
 		frmValetinho.getContentPane().add(textField_5);
 		textField_5.setColumns(10);
 		
@@ -218,11 +186,6 @@ public class Valetinho {
 		btnNewButton_3.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					textField_5.setText("");
-					return;
-				}
 				if (textField_5.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo Vazio!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -244,21 +207,21 @@ public class Valetinho {
 				}
 			}
 		});
-		btnNewButton_3.setBounds(189, 275, 120, 21);
+		btnNewButton_3.setBounds(189, 226, 120, 21);
 		frmValetinho.getContentPane().add(btnNewButton_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("Transferência de Placa:");
 		lblNewLabel_4.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_4.setBounds(62, 315, 189, 13);
+		lblNewLabel_4.setBounds(63, 281, 189, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_4);
 		
 		textField_6 = new JTextField();
-		textField_6.setBounds(83, 338, 96, 19);
+		textField_6.setBounds(83, 304, 96, 19);
 		frmValetinho.getContentPane().add(textField_6);
 		textField_6.setColumns(10);
 		
 		textField_7 = new JTextField();
-		textField_7.setBounds(189, 338, 96, 19);
+		textField_7.setBounds(189, 304, 96, 19);
 		frmValetinho.getContentPane().add(textField_7);
 		textField_7.setColumns(10);
 		
@@ -266,12 +229,6 @@ public class Valetinho {
 		btnNewButton_4.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					textField_6.setText("");
-					textField_7.setText("");
-					return;
-				}
 				if (textField_6.getText().isEmpty() || textField_7.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Campo Vazio!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -281,6 +238,7 @@ public class Valetinho {
 				int vaga2 = Integer.parseInt(textField_7.getText());
 				try {
 					estacionamento.transferir(vaga1, vaga2);
+					estacionamento.gravarDados();
 					JOptionPane.showMessageDialog(null, "Veículo da vaga " + vaga1 +  " transeferido para vaga " + vaga2, "Transferir", JOptionPane.INFORMATION_MESSAGE);
 					textField_6.setText("");
 					textField_7.setText("");
@@ -289,16 +247,11 @@ public class Valetinho {
 				}
 			}
 		});
-		btnNewButton_4.setBounds(295, 337, 120, 21);
+		btnNewButton_4.setBounds(295, 303, 120, 21);
 		frmValetinho.getContentPane().add(btnNewButton_4);
 		
-		JLabel lblNewLabel_5 = new JLabel("Listagem Geral:");
-		lblNewLabel_5.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_5.setBounds(85, 386, 135, 13);
-		frmValetinho.getContentPane().add(lblNewLabel_5);
-		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(85, 441, 131, 90);
+		scrollPane.setBounds(83, 423, 129, 88);
 		frmValetinho.getContentPane().add(scrollPane);
 		
 		JTextArea textArea = new JTextArea();
@@ -306,86 +259,83 @@ public class Valetinho {
 		textArea.setEditable(false);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(253, 441, 131, 90);
+		scrollPane_1.setBounds(253, 423, 129, 88);
 		frmValetinho.getContentPane().add(scrollPane_1);
 		
 		JTextArea textArea_1 = new JTextArea();
 		scrollPane_1.setViewportView(textArea_1);
 		textArea_1.setEditable(false);
 		
+		JLabel lblNewLabel_5 = new JLabel("Listagem Geral:");
+		lblNewLabel_5.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
+		lblNewLabel_5.setBounds(62, 369, 135, 13);
+		frmValetinho.getContentPane().add(lblNewLabel_5);
+		
 		JButton btnNewButton_5 = new JButton("Listar");
 		btnNewButton_5.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
 				textArea.setText("");
-				for(String s : estacionamento.listarGeral()) {
-					textArea.append(" " + s + "\n");
+				for (int i = 0; i < estacionamento.listarGeral().length; i++) {
+					textArea.append(" " + (i+1) + "  → " + estacionamento.listarGeral()[i] + "\n");
 				}
 			}
 		});
-		btnNewButton_5.setBounds(85, 409, 131, 21);
+		btnNewButton_5.setBounds(83, 392, 131, 21);
 		frmValetinho.getContentPane().add(btnNewButton_5);
 		
 		JLabel lblNewLabel_6 = new JLabel("Listagem de Vagas Livres:");
 		lblNewLabel_6.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
-		lblNewLabel_6.setBounds(253, 386, 198, 13);
+		lblNewLabel_6.setBounds(247, 369, 198, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_6);
 		
 		JButton btnNewButton_6 = new JButton("Listar");
 		btnNewButton_6.setFont(new Font("JetBrains Mono ExtraBold", Font.BOLD, 11));
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (estacionamento == null) {
-					JOptionPane.showMessageDialog(null, "Crie um Estacionamento com N vagas!", "Mensagem de Erro", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
 				textArea_1.setText("");
 				for(Integer s : estacionamento.listarLivres()) {
 					textArea_1.append(" " + s + "\n");
 				}
 			}
 		});
-		btnNewButton_6.setBounds(253, 409, 131, 21);
+		btnNewButton_6.setBounds(253, 392, 131, 21);
 		frmValetinho.getContentPane().add(btnNewButton_6);
 		
 		JLabel lblNewLabel_8 = new JLabel("placa");
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_8.setForeground(Color.GRAY);
-		lblNewLabel_8.setBounds(115, 175, 45, 13);
+		lblNewLabel_8.setBounds(113, 89, 45, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_8);
 		
 		JLabel lblNewLabel_9 = new JLabel("vaga");
 		lblNewLabel_9.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_9.setForeground(Color.GRAY);
-		lblNewLabel_9.setBounds(218, 175, 45, 13);
+		lblNewLabel_9.setBounds(224, 89, 45, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_9);
 		
 		JLabel lblNewLabel_10 = new JLabel("vaga");
 		lblNewLabel_10.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_10.setForeground(Color.GRAY);
-		lblNewLabel_10.setBounds(113, 232, 45, 13);
+		lblNewLabel_10.setBounds(113, 169, 45, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_10);
 		
 		JLabel lblNewLabel_11 = new JLabel("placa");
 		lblNewLabel_11.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_11.setForeground(Color.GRAY);
-		lblNewLabel_11.setBounds(115, 293, 45, 13);
+		lblNewLabel_11.setBounds(113, 244, 45, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_11);
 		
 		JLabel lblNewLabel_12 = new JLabel("vaga origem");
 		lblNewLabel_12.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_12.setForeground(Color.GRAY);
-		lblNewLabel_12.setBounds(104, 355, 75, 13);
+		lblNewLabel_12.setBounds(104, 320, 75, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_12);
 		
 		JLabel lblNewLabel_13 = new JLabel("vaga destino");
 		lblNewLabel_13.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		lblNewLabel_13.setForeground(Color.GRAY);
-		lblNewLabel_13.setBounds(210, 355, 75, 13);
+		lblNewLabel_13.setBounds(210, 320, 75, 13);
 		frmValetinho.getContentPane().add(lblNewLabel_13);
 		
 		JMenuBar menuBar = new JMenuBar();

@@ -111,7 +111,7 @@ public class Estacionamento {
 
     public void gravarDados() throws IOException { // gravar no arquivo “placas.csv”, a placa de cada vaga ocupada no momento
     	
-        FileWriter writer = new FileWriter(new File("placas.csv"), true);
+        FileWriter writer = new FileWriter(new File("placas.csv"), false);
         BufferedWriter bw = new BufferedWriter(writer);
         
         for(int i = 0; i < placas.length; i++) {       
@@ -125,18 +125,24 @@ public class Estacionamento {
 
     public void lerDados() throws FileNotFoundException { // ler do arquivo “placas.csv”, a placa de cada vaga ocupada no momento
     	
-    	Scanner arquivo = new Scanner(new File("placas.csv"));
-    	String linha;
-    	String[] placa;
-    	
-    	do {
-    		linha = arquivo.nextLine();
-    		placa = linha.split(";");
-    		System.out.println(placa[1]);
+    	try {
+    		Scanner arquivo = new Scanner(new File("placas.csv"));
+    		String[] divisao;
+    		String linha;
     		
-    	} while (arquivo.hasNextLine());
+    		do {
+    			linha = arquivo.nextLine();
+    			divisao = linha.split(";");
+    			int vaga = Integer.parseInt(divisao[0]);
+    			this.placas[vaga - 1] = divisao[1];
+    			
+    		} while (arquivo.hasNextLine());
     		
-    	arquivo.close();
+    		arquivo.close();
+    		
+    	} catch (Exception e) {
+    		e.getMessage();
+    	}
 
     }
 
