@@ -85,11 +85,10 @@ public class Valetinho {
 		frmValetinho.setBounds(400, 100, 499, 625);
 		frmValetinho.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmValetinho.getContentPane().setLayout(null);
-		
+
 		try {
 			estacionamento = new Estacionamento(10);
 			estacionamento.lerDados();
-			JOptionPane.showMessageDialog(null, "Estacionamento Criado!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
 		} catch (Exception e) {
 			String msg = e.getMessage();
